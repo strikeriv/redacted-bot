@@ -1,0 +1,48 @@
+import { type CacheType, type ChatInputCommandInteraction, EmbedBuilder, type GuildTextBasedChannel, SlashCommandBuilder, type SlashCommandStringOption } from 'discord.js'
+
+module.exports = {
+  data: new SlashCommandBuilder()
+    .setName('quote')
+    .setDescription('Suggest a quote to archive.')
+    .addStringOption((option: SlashCommandStringOption) => option.setName('messageid').setDescription('The message ID to quote.')
+      .setRequired(true)),
+  async execute (interaction: ChatInputCommandInteraction<CacheType>) {
+    const messageId = interaction.options.getString('messageid')
+    if (messageId == null) {
+      return await interaction.reply({ content: 'The message ID is not valid.', ephemeral: true })
+    }
+
+    const guild = interaction.guild
+    if (guild == null) {
+      return await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true })
+    }
+
+    const channel = await guild.channels.fetch(process.env.quotes_channel ?? '') as GuildTextBasedChannel
+    const message = await channel.messages.fetch(messageId)
+
+    // Message validation
+    if (message == null) {
+      return await interaction.reply({ content: 'The given message could not be found.\nMake sure you\'re running this command in the channel that the message is located in.', ephemeral: true })
+    }
+
+    if (message.author.bot) {
+      return await interaction.reply({ content: 'You cant quote a bot message.', ephemeral: true })
+    }
+
+    if (message.author === interaction.user) {
+      return await interaction.reply({ content: 'You cant quote your own message. That would be self-plagiarism, believe it or not.', ephemeral: true })
+    }
+
+    // Construct the embed that is sent
+    const embed = new EmbedBuilder()
+      .setColor('#0099ff')
+      .setTitle('Quoted Out of Context')
+      .setDescription(`**"${message.content}"** - ${message.author.toString()}`)
+      .setFooter({ text: `Quoted by: @${interaction.user.username}` })
+      .setTimestamp()
+
+    // Send the embed
+    await channel.send({ embeds: [embed] })
+    return await interaction.reply({ content: 'The quote has been quoted.', ephemeral: true })
+  }
+}

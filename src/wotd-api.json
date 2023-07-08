@@ -1,0 +1,40 @@
+{
+    "_id": "648dd3ef3b41674f6a9cdefd",
+    "word": "merry-andrew",
+    "publishDate": "2023-07-07T02:00:00.000Z",
+    "contentProvider": {
+        "name": "wordnik",
+        "id": 711
+    },
+    "note": "The origin of 'merry-andrew' has long been disputed. It may come from the stage name of a particular performer at the Bartholomew Fair in the 17th century.",
+    "htmlExtra": null,
+    "pdd": "2023-07-07",
+    "definitions": [
+        {
+            "text": "One whose business it is to make sport for others by jokes and ridiculous posturing; a buffoon; a clown.",
+            "partOfSpeech": "noun",
+            "source": "century",
+            "note": null
+        }
+    ],
+    "examples": [
+        {
+            "url": "http://api.wordnik.com/v4/mid/8ef25c9072934feb55c078f2aa0b9bb841aede1c96851adeceec8cb8f5031151",
+            "text": "And after a few efforts to better her condition she grew cautious, and hesitated discreetly before returning one of those ingenuous answers which, in the beginning, had made her the merry-andrew of the class.",
+            "title": "Henry Handel Richardson, The Getting of Wisdom",
+            "id": 1096068281
+        },
+        {
+            "url": "http://api.wordnik.com/v4/mid/b05bb68f94f29f9307d701b3563c7cbe4d6cfbb640886906540323b8e0ae21ba",
+            "text": "We had about half a dozen men, mostly trudging on foot, and but slightly armed, commanded by Selameh; and one of them, named Salem, was the merry-andrew of the party, full of verbal and practical jokes.",
+            "title": "James Finn, Byeways in Palestine",
+            "id": 1148094801
+        },
+        {
+            "url": "http://api.wordnik.com/v4/mid/b05bb68f94f29f9307d701b3563c7cbe9a22344e1337f3b923991fdb702a5f35",
+            "text": "But its chief modern interest lies in the tradition that Swift once observed that he 'had not laughed above twice' in his life, -- once at the tricks of a merry-andrew, and again when Fielding's Tom Thumb killed the ghost.",
+            "title": "G.M. Godden, Henry Fielding: a Memoir",
+            "id": 1163856804
+        }
+    ]
+}
