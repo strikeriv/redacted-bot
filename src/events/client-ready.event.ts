@@ -7,6 +7,7 @@ import apiResponse from '../wotd-api.json'
 
 export async function ClientReadyEvent (client: Client<true>): Promise<void> {
   runAtTime('8:30 AM', async () => {
+    console.log('Running WOTD, as it is 8:30 AM!')
     const guild = await client.guilds.fetch(process.env.guild_id ?? '')
     if (guild == null) return
     const channel = await guild.channels.fetch(process.env.quotes_channel ?? '') as GuildTextBasedChannel
@@ -29,4 +30,5 @@ export async function ClientReadyEvent (client: Client<true>): Promise<void> {
       await channel.send({ embeds: [wotdEmbed] })
     }).catch(function (error: any) { console.error(error) })
   })
+  console.log('Ready!')
 }
