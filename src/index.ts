@@ -45,6 +45,8 @@ client.on(Events.InteractionCreate, async (interaction) => {
   await InteractionCreateEvent(interaction)
 })
 
-client.login(process.env.token).catch((error) => {
+client.login(process.env.token).then(_ => {
+  console.log('Logged in!')
+}).catch((error) => {
   console.error('Error while logging in : ', error)
 })

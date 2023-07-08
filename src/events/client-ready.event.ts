@@ -3,7 +3,6 @@ import axios from 'axios'
 import { EmbedBuilder, type GuildTextBasedChannel } from 'discord.js'
 import { type Client } from '../shared/interfaces'
 import { runAtTime } from '../util/functions.util'
-import apiResponse from '../wotd-api.json'
 
 export async function ClientReadyEvent (client: Client<true>): Promise<void> {
   runAtTime('8:30 AM', async () => {
@@ -16,13 +15,13 @@ export async function ClientReadyEvent (client: Client<true>): Promise<void> {
     axios.request({
       method: 'GET',
       url: `https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=${process.env.wordnik_api_key ?? ''}`
-    }).then(async function ({ data }: { data: { word: string, note: string, definitions: [{ partOfSpeech: string }], examples: [{ text: string }] } }) {
+    }).then(async function ({ data }: { data: { word: string, note: string, definitions: [{ text: string }], examples: [{ text: string }] } }) {
       const wotdEmbed = new EmbedBuilder()
         .setColor('#0099ff')
         .setTitle('Word of the day')
         .setDescription(`The word of the day is \`${data.word}\`.`)
         .addFields(
-          { name: 'Definition', value: `\`${apiResponse.definitions[0].text}\`` },
+          { name: 'Definition', value: `\`${data.definitions[0].text}\`` },
           { name: 'Example', value: `\`${data.examples[0].text}\`` }
         )
         .setFooter({ text: data.note })
