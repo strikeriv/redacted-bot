@@ -13,12 +13,11 @@ module.exports = {
     }
 
     const guild = interaction.guild
-    if (guild == null) {
+    if (guild == null || interaction.channel == null) {
       return await interaction.reply({ content: 'This command can only be used in a server.', ephemeral: true })
     }
 
-    const channel = await guild.channels.fetch(process.env.quotes_channel ?? '') as GuildTextBasedChannel
-    const message = await channel.messages.fetch(messageId)
+    const message = await interaction.channel.messages.fetch(messageId)
 
     // Message validation
     if (message == null) {
@@ -42,7 +41,8 @@ module.exports = {
       .setTimestamp()
 
     // Send the embed
-    await channel.send({ embeds: [embed] })
+    const quotesChannel = await guild.channels.fetch(process.env.quotes_channel ?? '') as GuildTextBasedChannel
+    await quotesChannel.send({ embeds: [embed] })
     return await interaction.reply({ content: 'The quote has been quoted.', ephemeral: true })
   }
 }

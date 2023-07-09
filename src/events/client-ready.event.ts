@@ -5,11 +5,11 @@ import { type Client } from '../shared/interfaces'
 import { runAtTime } from '../util/functions.util'
 
 export async function ClientReadyEvent (client: Client<true>): Promise<void> {
-  runAtTime('8:30 AM', async () => {
-    console.log('Running WOTD, as it is 8:30 AM!')
+  runAtTime('12:00 AM', async () => {
+    console.log('\nRunning the word of the day!')
     const guild = await client.guilds.fetch(process.env.guild_id ?? '')
     if (guild == null) return
-    const channel = await guild.channels.fetch(process.env.quotes_channel ?? '') as GuildTextBasedChannel
+    const channel = await guild.channels.fetch(process.env.wotd_channel ?? '') as GuildTextBasedChannel
     if (channel == null) return
 
     axios.request({
