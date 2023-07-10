@@ -5,6 +5,11 @@ export class Client<Ready extends boolean = boolean> extends DiscordClient<Ready
 }
 
 export class Command {
-  data!: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
-  execute!: (interaction: Interaction) => Promise<void>
+  data: Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>
+  execute: (interaction: Interaction) => Promise<void>
+
+  constructor (data: SlashCommandBuilder, execute: (interaction: any) => Promise<void>) {
+    this.data = data
+    this.execute = execute
+  }
 }
