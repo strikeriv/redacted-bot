@@ -78,9 +78,7 @@ async function execute(interaction: ChatInputCommandInteraction) {
       content: 'The quote has been quoted.',
       ephemeral: true,
     });
-  } catch (error) {
-    console.log(error);
-
+  } catch {
     return await interaction.reply({
       content:
         'Something went wrong while running this command. Contact @strikeriv',

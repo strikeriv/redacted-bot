@@ -1,6 +1,6 @@
-import { from, map, Observable, tap } from 'rxjs';
-import { WordOfTheDayResponse } from './wotd.types';
 import axios from 'axios';
+import { from, map, Observable } from 'rxjs';
+import { WordOfTheDayResponse } from './wotd.types';
 
 export const wotdService = {
   getTodaysWordOfTheDay: (): Observable<WordOfTheDayResponse> => {
@@ -9,9 +9,6 @@ export const wotdService = {
         method: 'GET',
         url: `https://api.wordnik.com/v4/words.json/wordOfTheDay?api_key=${Bun.env.WOTD_API_KEY}`,
       })
-    ).pipe(
-      tap((data) => console.log(data)),
-      map((response) => response.data)
-    );
+    ).pipe(map((response) => response.data));
   },
 };
