@@ -9,12 +9,15 @@ export default function ready(client: Client<true>) {
   runAtTime('8:00 AM', () =>
     wotdCommand.execute({
       client,
+      reply: () => Promise.resolve(),
     } as unknown as ChatInputCommandInteraction)
   );
 
   runAtTime('8:00 AM', () =>
     wordleCommand.execute({
       client,
+      deferReply: () => Promise.resolve(),
+      editReply: () => Promise.resolve(),
     } as unknown as ChatInputCommandInteraction)
   );
 }
