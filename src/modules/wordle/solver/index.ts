@@ -7,7 +7,7 @@ import {
   filterWordsByRequiredPositions,
 } from './filters/positions.filter';
 import { filterValidWords } from './filters/valid-words.filter';
-import { words } from './static/words.data';
+import { AllValidGuesses } from './static/all-words.data';
 import { WordMatches } from './types/word.model';
 
 export function evaluateBestWordMatches(
@@ -22,8 +22,9 @@ export function evaluateBestWordMatches(
     ...incorrectLetters.flat(),
   ]);
 
-  let filteredWords = words
-    .filter(filterValidWords(disalowedLetters, requiredLetters))
+  let filteredWords = AllValidGuesses.filter(
+    filterValidWords(disalowedLetters, requiredLetters)
+  )
     .filter(filterWordsByRequiredPositions(correctLetters))
     .filter(filterWordsByIncorrectPositions(incorrectLetters));
 

@@ -4,23 +4,27 @@ import {
   EmbedBuilder,
   PermissionFlagsBits,
   SlashCommandBuilder,
-} from "discord.js";
+} from 'discord.js';
 
-import { EMPTY, forkJoin, from, map, switchMap } from "rxjs";
-import { wordleService } from "../modules/wordle/wordle.service";
-import { Command } from "../types/base.model";
+import { EMPTY, forkJoin, from, map, switchMap } from 'rxjs';
+import { wordleService } from '../modules/wordle/wordle.service';
+import { Command } from '../types/base.model';
 
 const data = new SlashCommandBuilder()
-  .setName("wordle")
-  .setDescription("Force run the Wordle event")
+  .setName('wordle')
+  .setDescription('Force run the Wordle event')
   .setDefaultMemberPermissions(PermissionFlagsBits.Administrator);
 
 async function execute(interaction: ChatInputCommandInteraction) {
   const client = interaction.client;
 
-  console.log("\nRunning Wordle!");
+  console.log('\nRunning Wordle!');
 
-  return from(interaction.deferReply())
+  return from(
+    interaction.deferReply({
+      ephemeral: true,
+    })
+  )
     .pipe(
       switchMap(() => from(client.guilds.fetch(Bun.env.GUILD_ID))),
       switchMap((guild) =>
@@ -35,16 +39,25 @@ async function execute(interaction: ChatInputCommandInteraction) {
 
         const { solution, days_since_launch, editor } = wordleData;
 
-        const { data, iterations } = wordleService.runWordleIterations(solution);
+        const { data, iterations } =
+          wordleService.runWordleIterations(solution);
         const { attempts, feedback, solves } = data;
 
-        const bestSolveIndex = attempts.reduce((maxIdx, curr, idx, array) => (curr < array[maxIdx] ? idx : maxIdx), 0);
+        const bestSolveIndex = attempts.reduce(
+          (maxIdx, curr, idx, array) => (curr < array[maxIdx] ? idx : maxIdx),
+          0
+        );
 
         const bestSolveFeedback = feedback[bestSolveIndex];
         const bestSolveSolved = solves[bestSolveIndex];
 
-        const averageSolveAttempts = (attempts.reduce((acc, val) => acc + val, 0) / attempts.length).toFixed(2);
-        const solvedPercentage = ((solves.filter((solved) => solved).length / iterations) * 100).toFixed(2);
+        const averageSolveAttempts = (
+          attempts.reduce((acc, val) => acc + val, 0) / attempts.length
+        ).toFixed(2);
+        const solvedPercentage = (
+          (solves.filter((solved) => solved).length / iterations) *
+          100
+        ).toFixed(2);
 
         const embedColor = bestSolveSolved ? Colors.Green : Colors.Red;
         const embed = new EmbedBuilder()
@@ -52,24 +65,24 @@ async function execute(interaction: ChatInputCommandInteraction) {
           .setTitle(`Wordle No. ${days_since_launch}`)
           .setFields(
             {
-              name: "Statistics",
+              name: 'Statistics',
               value: `Using \`${iterations}\` random starting words, here are the statistics of todays puzzle:\n\nSolve Percentage: \`${solvedPercentage}%\`\nAverage Attempts (par): \`${averageSolveAttempts}\``,
             },
             {
-              name: "Best Result",
-              value: `${bestSolveFeedback.join("\n")}\n`,
+              name: 'Best Result',
+              value: `${bestSolveFeedback.join('\n')}\n`,
             }
           )
           .setFooter({
             text: `Today's Wordle Editor: ${editor}`,
           });
 
-        interaction.editReply({
-          content: "The Wordle event has been force ran.",
-          options: {
-            ephemeral: true,
-          },
-        });
+        // interaction.editReply({
+        //   content: 'The Wordle event has been force ran.',
+        //   options: {
+        //     ephemeral: true,
+        //   },
+        // });
 
         channel.send({ embeds: [embed] });
       })
@@ -78,7 +91,7 @@ async function execute(interaction: ChatInputCommandInteraction) {
 }
 
 export const command = {
-  name: "wordle",
+  name: 'wordle',
   data,
   execute,
 } as Command;
